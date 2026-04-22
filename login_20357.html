@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            background-color: #ffe6f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 350px;
+            border: 2px solid #cc6699;
+            padding: 30px;
+            margin: 100px auto;
+            background-color: #fff0f5;
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #cc3366;
+        }
+
+        label {
+            color: #993366;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #cc99aa;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 15px;
+            background-color: #ff66a3;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff4d94;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <center>
+            <h2>LOGIN</h2>
+            <form id="loginForm">
+                <p>
+                    <label>Username: </label><br>
+                    <input type="text" id="username" name="username" required>
+                </p>
+                <p>
+                    <label>Password: </label><br>
+                    <input type="password" id="password" name="password" required>
+                </p>
+                <p>
+                    <input type="submit" value="LOGIN">
+                </p>
+            </form>
+        </center>
+    </div>
+
+    <script>
+        const validUsername = "avinsa";
+        const validPassword = "13097";
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUsername && password === validPassword) {
+                alert('LOGIN BERHASIL! Selamat datang ' + username.toUpperCase());
+                document.getElementById('loginForm').reset();
+            } else {
+                alert('LOGIN GAGAL! Username atau Password salah');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+    </script>
+</body>
+</html>
