@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator Ilmiah Pastel Pink</title>
+<style>
+    :root{
+        --bg1:#ffd6e7;
+        --bg2:#ffeaf4;
+        --panel:#fff7fb;
+        --display:#ffffff;
+        --accent:#f8a5c2;
+        --accent-2:#f78fb3;
+        --text:#5a4a52;
+    }
+
+    *{box-sizing:border-box}
+
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .app{
+        display:flex;
+        gap:15px;
+        align-items: flex-start;
+    }
+
+    /* COMMON BOX STYLE */
+    .history, .calculator, .scientific {
+        background: var(--panel);
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        height: 520px; 
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* HISTORY PANEL */
+    .history{
+        width:200px;
+    }
+
+    .history h3, .scientific h3, .calc-header h3{
+        margin-top:0;
+        font-size:16px;
+        color:var(--text);
+        text-align:center;
+    }
+
+    #historyList {
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .history-item{
+        background:#fff;
+        padding:8px;
+        border-radius:10px;
+        margin-bottom:8px;
+        font-size:13px;
+        color:var(--text);
+        box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    /* CALCULATOR MAIN */
+    .calculator {
+        width: 340px;
+    }
+
+    .calc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .display-container{
+        background: var(--display);
+        border-radius: 16px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .display{
+        width:100%;
+        border:none;
+        outline:none;
+        text-align:right;
+        font-size:30px;
+        background:transparent;
+        color:var(--text);
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        flex-grow: 1;
+    }
+
+    /* SCIENTIFIC PANEL */
+    .scientific {
+        width: 200px;
+        display: none; /* Tersembunyi awal */
+    }
+
+    .sci-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* BUTTONS STYLE */
+    button {
+        padding: 15px 5px;
+        font-size: 15px;
+        border: none;
+        border-radius: 14px;
+        background: var(--accent);
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+
+    button:hover {
+        background: var(--accent-2);
+        transform: translateY(-2px);
+    }
+
+    .operator { background: #f7a8c4; }
+    .equal { background: #ec6f9f; grid-column: span 2; }
+    .clear { background: #f48fb1; }
+    .sci-btn { background: #d192ad; font-size: 13px; }
+    
+    .switch-btn {
+        background: #b8e994;
+        color: #4a6d32;
+        font-size: 11px;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- HISTORY -->
+    <div class="history">
+        <h3>Riwayat</h3>
+        <div id="historyList"></div>
+    </div>
+
+    <!-- CALCULATOR MAIN -->
+    <div class="calculator">
+        <div class="calc-header">
+            <div style="width: 60px;"></div> <!-- Spacer -->
+            <h3>Kalkulator</h3>
+            <button onclick="toggleScientific()" class="switch-btn">SWITCH</button>
+        </div>
+
+        <div class="display-container">
+            <input type="text" id="display" class="display" placeholder="0" disabled>
+        </div>
+
+        <div class="buttons">
+            <button onclick="clearAll()" class="clear">AC</button>
+            <button onclick="clearLast()" class="clear">C</button>
+            <button onclick="append('%')">%</button>
+            <button onclick="append('/')" class="operator">÷</button>
+
+            <button onclick="append('7')">7</button>
+            <button onclick="append('8')">8</button>
+            <button onclick="append('9')">9</button>
+            <button onclick="append('*')" class="operator">×</button>
+
+            <button onclick="append('4')">4</button>
+            <button onclick="append('5')">5</button>
+            <button onclick="append('6')">6</button>
+            <button onclick="append('-')" class="operator">−</button>
+
+            <button onclick="append('1')">1</button>
+            <button onclick="append('2')">2</button>
+            <button onclick="append('3')">3</button>
+            <button onclick="append('+')" class="operator">+</button>
+
+            <button onclick="append('0')">0</button>
+            <button onclick="append('.')">.</button>
+            <button onclick="calculate()" class="equal">=</button>
+        </div>
+    </div>
+
+    <!-- SCIENTIFIC PANEL -->
+    <div class="scientific" id="sciPanel">
+        <h3>Fitur Ilmiah</h3>
+        <div class="sci-buttons">
+            <button onclick="append('Math.sqrt(')" class="sci-btn">√</button>
+            <button onclick="append('**')" class="sci-btn">^</button>
+            <button onclick="append('Math.log10(')" class="sci-btn">log</button>
+            <button onclick="append('Math.PI')" class="sci-btn">π</button>
+            <button onclick="append('Math.sin(')" class="sci-btn">sin</button>
+            <button onclick="append('Math.cos(')" class="sci-btn">cos</button>
+            <button onclick="append('Math.tan(')" class="sci-btn">tan</button>
+            <button onclick="append('Math.asin(')" class="sci-btn">sin</button>
+            <button onclick="append('Math.acos(')" class="sci-btn">cos</button>
+            <button onclick="append('Math.atan(')" class="sci-btn">tan</button>
+            <button onclick="append('(')" class="sci-btn">(</button>
+            <button onclick="append(')')" class="sci-btn">)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById("display");
+    const historyList = document.getElementById("historyList");
+    const sciPanel = document.getElementById("sciPanel");
+
+    function append(value) {
+        display.value += value;
+    }
+
+    function clearAll() {
+        display.value = "";
+    }
+
+    function clearLast() {
+        display.value = display.value.slice(0, -1);
+    }
+
+    function toggleScientific() {
+        // Cek display secara eksplisit
+        if (sciPanel.style.display === "flex") {
+            sciPanel.style.display = "none";
+        } else {
+            sciPanel.style.display = "flex";
+        }
+    }
+
+    function addToHistory(expression, result){
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.textContent = `${expression} = ${result}`;
+        historyList.prepend(item);
+    }
+
+    function calculate() {
+        try {
+            const expression = display.value;
+            const result = eval(expression);
+            display.value = result;
+            addToHistory(expression, result);
+        } catch {
+            display.value = "Error";
+        }
+    }
+</script>
+
+</body>
+</html>
